@@ -1,0 +1,361 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fashion Store</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+:root{
+    --yellow:#f4c542;
+    --light-yellow:#fff8e7;
+    --brown:#6f4e37;
+    --dark-brown:#4a2c1a;
+    --black:#1a1a1a;
+}
+body{
+    background: linear-gradient(135deg,#fff8e7,#fdf2c4);
+    min-height:100vh;
+    font-family: Arial, sans-serif;
+}
+.navbar{
+    background: var(--brown) !important;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.navbar-brand{
+    color:var(--yellow)!important;
+    font-size:28px;
+    font-weight:700;
+}
+.nav-link{
+    color:white!important;
+    font-weight:600;
+    margin:0 8px;
+    padding:8px 15px!important;
+    border-radius:8px;
+    transition:.3s;
+}
+.nav-link:hover{
+    background:var(--yellow);
+    color:var(--dark-brown)!important;
+}
+.form-control{
+    border:2px solid var(--yellow);
+    border-radius:30px;
+}
+.form-control:focus{
+    border-color:var(--yellow);
+    box-shadow:0 0 10px rgba(244,197,66,.4);
+}
+.btn-search{
+    background:var(--yellow);
+    color:var(--dark-brown);
+    border:none;
+    border-radius:30px;
+    padding:8px 20px;
+    font-weight:600;
+}
+.btn-search:hover{
+    background:white;
+    color:var(--brown);
+}
+.carousel{
+    width:100%;
+    margin-top:0;
+}
+.carousel-inner{
+    border-radius:0;
+    overflow:hidden;
+}
+.carousel-item img{
+    width:100%;
+    height:500px;
+    object-fit:cover;
+    display:block;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+    background-color:rgba(111,78,55,.8);
+    border-radius:50%;
+    padding:20px;
+}
+.section-title{
+    text-align:center;
+    color:var(--brown);
+    font-weight:700;
+    margin:60px 0 30px;
+}
+.product-card{
+    border:none;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    transition:.3s;
+}
+.product-card:hover{
+    transform:translateY(-8px);
+}
+.product-card img{
+    height:250px;
+    object-fit:cover;
+}
+.card-title{
+    color:var(--brown);
+}
+.btn-buy{
+    background:var(--yellow);
+    color:var(--black);
+    border:none;
+    font-weight:600;
+}
+.btn-buy:hover{
+    background:var(--brown);
+    color:white;
+}
+footer{
+    background:var(--brown);
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:60px;
+}
+@media(max-width:768px){
+    .carousel-item img{
+        height:250px;
+    }
+    .navbar-brand{
+        font-size:22px;
+    }
+    .d-flex{
+        margin-top:10px;
+    }
+}
+.cart-btn{
+    position:fixed;
+    top:90px;
+    right:20px;
+    background:#f4c542;
+    color:#000;
+    padding:12px 20px;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:1000;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+.cart-panel{
+    position:fixed;
+    top:0;
+    right:-400px;
+    width:350px;
+    height:100vh;
+    background:#fff;
+    box-shadow:-5px 0 20px rgba(0,0,0,.2);
+    transition:.4s;
+    z-index:2000;
+    display:flex;
+    flex-direction:column;
+}
+.cart-panel.active{
+    right:0;
+}
+.cart-header{
+    padding:20px;
+    background:#6f4e37;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+#cart-items{
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
+}
+.cart-item{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+    border-bottom:1px solid #ddd;
+    padding-bottom:10px;
+}
+.cart-item img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:10px;
+}
+.cart-footer{
+    padding:15px;
+    border-top:1px solid #ddd;
+    background:#fafafa;
+}
+.remove-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:4px 10px;
+    border-radius:5px;
+    font-size:12px;
+}
+</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">Fashion Store</a>
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+            <form class="d-flex" onsubmit="searchProduct(event)">
+                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search">
+                <button class="btn btn-search" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active"><img src="b1.png" alt="Banner 1"></div>
+        <div class="carousel-item"><img src="b2.png" alt="Banner 2"></div>
+        <div class="carousel-item"><img src="b3.png" alt="Banner 3"></div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+</div>
+
+<div class="container" id="products">
+    <h2 class="section-title">Featured Collection</h2>
+    <div class="row g-4">
+        <div class="col-md-4"><div class="card product-card"><img src="c1.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Elegant Women's Dress</h5><p class="card-text">Premium fashion dress perfect for parties and events.</p><button class="btn btn-buy" onclick="addToCart('Elegant Women\'s Dress','Rs 3000','c1.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c2.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Stylish Handbag</h5><p class="card-text">Trendy handbag designed for everyday elegance.</p><button class="btn btn-buy" onclick="addToCart('Stylish Handbag','Rs 2500','c2.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c3.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Premium Smart Watch</h5><p class="card-text">Smart design with advanced features and comfort.</p><button class="btn btn-buy" onclick="addToCart('Premium Smart Watch','Rs 4000','c3.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c4.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Wireless Headphones</h5><p class="card-text">Crystal-clear sound with all-day listening comfort.</p><button class="btn btn-buy" onclick="addToCart('Wireless Headphones','Rs 2000','c4.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c5.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Luxury Smart Watch</h5><p class="card-text">Modern smartwatch with fitness.</p><button class="btn btn-buy" onclick="addToCart('Luxury Smart Watch','Rs 4000','c5.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c6.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Professional Camera</h5><p class="card-text">Capture stunning photos with professional quality.</p><button class="btn btn-buy" onclick="addToCart('Professional Camera','Rs 5000','c6.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c7.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Classic Wrist Watch</h5><p class="card-text">Timeless watch crafted for style and precision.</p><button class="btn btn-buy" onclick="addToCart('Classic Wrist Watch','Rs 3500','c7.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c8.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">Dior Sauvage Perfume</h5><p class="card-text">Long-lasting fragrance with a bold and fresh scent.</p><button class="btn btn-buy" onclick="addToCart('Dior Sauvage Perfume','Rs 4500','c8.jfif')">Add to Cart</button></div></div></div>
+        <div class="col-md-4"><div class="card product-card"><img src="c9.jfif" class="card-img-top" alt=""><div class="card-body"><h5 class="card-title">All-in-One Makeup Kit</h5><p class="card-text">Complete beauty kit for a flawless makeup look.</p><button class="btn btn-buy" onclick="addToCart('All-in-One Makeup Kit','Rs 2000','c9.jfif')">Add to Cart</button></div></div></div>
+    </div>
+</div>
+<div class="cart-btn" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-header"><h4>Shopping Cart</h4><button class="btn-close" onclick="toggleCart()"></button></div>
+    <div id="cart-items"></div>
+    <div class="cart-footer"><h5>Total: <span id="cart-total">Rs 0</span></h5><button class="btn btn-success w-100" type="button" onclick="checkout()">Checkout</button></div>
+</div>
+<section id="about" class="container my-5"><h2 class="section-title">About Us</h2><p>Welcome to Fashion Store. We provide fashion products, watches, perfumes, electronics and beauty accessories at affordable prices.</p></section>
+<footer class="custom-footer">
+    <section class="d-flex justify-content-between p-4 border-bottom container"><div><span>Follow us on social media:</span></div><div><a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-icon"><i class="fab fa-instagram"></i></a><a href="#" class="social-icon"><i class="fab fa-twitter"></i></a><a href="#" class="social-icon"><i class="fab fa-youtube"></i></a><a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a></div></section>
+    <section><div class="container text-center text-md-start py-5"><div class="row"><div class="col-md-4 mb-4"><h6 class="text-uppercase mb-4">Fashion Store</h6><p>Discover the latest fashion trends, electronics, beauty products and accessories at affordable prices.</p></div><div class="col-md-2 mb-4"><h6 class="text-uppercase mb-4">Products</h6><p><a href="#">Women's Fashion</a></p><p><a href="#">Smart Watches</a></p><p><a href="#">Perfumes</a></p><p><a href="#">Beauty Products</a></p></div><div class="col-md-3 mb-4"><h6 class="text-uppercase mb-4">Useful Links</h6><p><a href="#home">Home</a></p><p><a href="#products">Products</a></p><p><a href="#about">About Us</a></p><p><div class="contact" id="contact"></div><a href="#contact">Contact</a></p></div><div class="col-md-3 mb-4"><h6 class="text-uppercase mb-4">Contact</h6><p><i class="fas fa-location-dot me-2"></i>Karachi, Pakistan</p><p><i class="fas fa-envelope me-2"></i>info@fashionstore.com</p><p><i class="fas fa-phone me-2"></i>+92 300 1234567</p><p><i class="fab fa-whatsapp me-2"></i>+92 300 1234567</p></div></div></div></section>
+    <div class="text-center p-3 copyright">© 2026 Fashion Store | All Rights Reserved</div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</footer>
+ <script>
+let cart = [];
+function toggleCart(){
+    document.getElementById("cartPanel").classList.toggle("active");
+}
+function addToCart(name, price, image){
+    cart.push({name: name, price: parseInt(price.replace(/\D/g, '')), image: image});
+    updateCart();
+    document.getElementById("cartPanel").classList.add("active");
+}
+function removeItem(index){
+    cart.splice(index, 1);
+    updateCart();
+}
+function updateCart(){
+    let cartItems = document.getElementById("cart-items");
+    let cartCount = document.getElementById("cart-count");
+    let cartTotal = document.getElementById("cart-total");
+    cartItems.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, index) => {
+        total += item.price;
+        cartItems.innerHTML += `
+        <div class="cart-item">
+            <img src="${item.image}">
+            <div>
+                <h6>${item.name}</h6>
+                <p>Rs ${item.price}</p>
+                <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+            </div>
+        </div>
+        `;
+    });
+    cartCount.innerText = cart.length;
+    cartTotal.innerText = "Rs " + total;
+}
+function checkout(){
+    if (cart.length === 0) {
+        alert("Your cart is empty. Add items before checkout.");
+        return;
+    }
+    fetch("save_order.php", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(cart)
+    })
+    .then(async response => {
+        const text = await response.text();
+        let data = null;
+        try { data = JSON.parse(text); } catch (e) { data = null; }
+        console.log('save_order.php response', response.status, text);
+        if (response.ok && data && data.success) {
+            alert(data.message || 'Order saved successfully');
+            cart = [];
+            updateCart();
+            document.getElementById("cartPanel").classList.remove("active");
+        } else {
+            const message = data && data.message ? data.message : text || 'Order could not be saved.';
+            alert('Error: ' + message);
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Order could not be saved. Please try again.");
+    });
+}
+function searchProduct(event){
+    event.preventDefault();
+    let search = document.getElementById("searchInput").value.trim().toLowerCase();
+    let products = document.querySelectorAll(".product-card");
+    let found = false;
+    products.forEach(card => {
+        let title = card.querySelector(".card-title").innerText.toLowerCase();
+        if (title.includes(search)) {
+            found = true;
+            card.style.display = "block";
+            card.scrollIntoView({ behavior: "smooth", block: "center" });
+            card.style.border = "4px solid #f4c542";
+            setTimeout(() => { card.style.border = "none"; }, 3000);
+        } else {
+            card.style.display = "none";
+        }
+    });
+    if (search === "") {
+        products.forEach(card => { card.style.display = "block"; });
+        return;
+    }
+    if (!found) {
+        products.forEach(card => { card.style.display = "block"; });
+        alert("Product not found");
+    }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
